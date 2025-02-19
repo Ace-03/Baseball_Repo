@@ -61,9 +61,9 @@ public class Bat : MonoBehaviour
     IEnumerator SwingingBat()
     {
         float currentAngle = transform.eulerAngles.y;
-        while (currentAngle < 16 || currentAngle > 24)
+        while (currentAngle < 180 || currentAngle > 260)
         {
-            this.transform.rotation = Quaternion.Euler(Vector3.Lerp(this.transform.rotation.eulerAngles, new Vector3(0, -20, 0), swingSpeed * Time.deltaTime));
+            this.transform.rotation = Quaternion.Euler(Vector3.Lerp(this.transform.rotation.eulerAngles, new Vector3(0, 220, 0), swingSpeed * Time.deltaTime));
             currentAngle = transform.eulerAngles.y;
             yield return null;
         }
