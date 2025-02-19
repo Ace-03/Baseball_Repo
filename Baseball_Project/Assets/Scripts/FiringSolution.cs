@@ -6,27 +6,44 @@ using UnityEngine;
 public class FiringSolution
 {
 	// determine the firing angle to hit a given location with a given muzzle velocity
+	private bool isFast;
+	private int randomValue;
+
+
 	public Nullable<Vector3> Calculate(Vector3 start, Vector3 end, float muzzleV, Vector3 gravity)
 	{
+		randomValue = UnityEngine.Random.Range(0, 2);
+
+		if (randomValue == 0)
+		{
+			isFast = true;
+			Debug.Log("Fast");
+		}
+		else if (randomValue == 1)
+		{
+			isFast = false;
+			Debug.Log("Slow");
+		}
+
 		Nullable<float> ttt = GetTimeToTarget(start, end, muzzleV, gravity);
 		if (!ttt.HasValue)
 		{
 			return null;
 		}
-		Debug.Log("Time to target: " + ttt);
+		//Debug.Log("Time to target: " + ttt);
 
 		// return the firing vector
 		//Vector3 delta = start - end;
 		Vector3 delta = end - start;
-		Debug.Log("Vector to target: " + delta);
+		//Debug.Log("Vector to target: " + delta);
 
 		Vector3 n1 = delta * 2;
 		Vector3 n2 = gravity * (ttt.Value * ttt.Value);
 		float d = 2 * muzzleV * ttt.Value;
 		Vector3 solution = (n1 - n2) / d;
 
-		Debug.Log("solution = " + n1 + " - " + n2 + " / " + d);
-		Debug.Log("solution = " + solution);
+		//Debug.Log("solution = " + n1 + " - " + n2 + " / " + d);
+		//Debug.Log("solution = " + solution);
 
 		return solution;
 		//return ((delta * 2) - (gravity * (ttt.Value * ttt.Value))) / (2 * muzzleV * ttt.Value);
@@ -76,8 +93,15 @@ public class FiringSolution
 		}
 		else
 		{
-			//ttt = Mathf.Min(time0, time1);
-			ttt = Mathf.Max(time0, time1);
+			if (isFast)
+			{
+				ttt = Mathf.Min(time0, time1);
+			}
+			else 
+			{
+				ttt = Mathf.Max(time0, time1);
+			}
+
 		}
 
 		return ttt;
